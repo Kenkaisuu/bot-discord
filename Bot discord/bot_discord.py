@@ -6,6 +6,24 @@ from datetime import datetime, timezone
 import json
 import asyncio
 
+# --- INTEGRASI FLASK WEBSERVER (KEEP ALIVE) ---
+from flask import Flask
+from threading import Thread
+
+app = Flask('')
+
+@app.route('/')
+def home():
+    return "Bot Discord Online 24/7! 🚀"
+
+def run_flask():
+    app.run(host='0.0.0.0', port=8080)
+
+def keep_alive():
+    t = Thread(target=run_flask)
+    t.start()
+# ----------------------------------------------
+
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
@@ -622,5 +640,8 @@ async def setuptiket(ctx):
     except discord.Forbidden:
         pass
 
-# Token Bot
+# ==========================================
+# MENJALANKAN SERVER WEBSERVER & BOT DISCORD
+# ==========================================
+keep_alive()  # 🌐 Menyalakan server web Flask di background
 bot.run('MTU0MTYzMzg4MDk1MDMwODk2NA.GCxSOm.5qZuaoUECiaFd3lvMm9q4RedVcy4wbaq_tOQ8M')
